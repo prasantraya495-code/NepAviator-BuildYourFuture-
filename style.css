@@ -1,0 +1,10 @@
+body { font-family: Arial, sans-serif; background: #eef2f5; text-align: center; padding: 50px; }
+.login-box { margin: 20px auto; width: 300px; }
+input { display: block; margin: 10px auto; padding: 10px; width: 80%; }
+button { padding: 10px 20px; }
+#plane { font-size: 50px; margin: 20px; animation: fly 2s infinite; }
+@keyframes fly {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(300px); }
+}
+#multiplier { font-size: 24px; font-weight: bold; margin-top: 20px; }
