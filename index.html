@@ -1,14 +1,17 @@
-<Index.html>
+<!Index.html>
 <html lang="ne">
 <head>
 <meta charset="UTF-8" />
-<title>Aviator Game Simple Version</title>
+<title>Aviator Game - Signup Login Play</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #f0f2f5;
     margin: 0; padding: 0;
-    display: flex; j
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh;
+  }
+  .container {
     background: white;
     width: 400px;
     padding: 25px 30px;
@@ -151,20 +154,131 @@
     document.getElementById('signup-form').style.display =
       document.getElementById('signup-form').style.display === 'none' ? 'block' : 'none';
     document.getElementById('login-form').style.display =
+      document.getElementById('login-form').style.display === 'none' ? 'block' : 'none';
+  }
 
+  function clearMessages() {
+    suMsg.innerText = '';
+    liMsg.innerText = '';
+    statusDiv.innerText = '';
+  }
 
+  function signup() {
+    clearMessages();
+    const username = document.getElementById('su_username').value.trim();
+    const password = document.getElementById('su_password').value.trim();
 
+    if (!username || !password) {
+      suMsg.innerText = 'Username र Password दुवै आवश्यक छ।';
+      return;
+    }
 
+    if (users.find(u => u.username === username)) {
+      suMsg.innerText = 'Username पहिले नै छ।';
+      return;
+    }
 
+    users.push({ username, password, balance: 10000 });
+    suMsg.innerText = 'Signup सफल भयो। Login गर्नुहोस्।';
+    suMsg.classList.add('success');
 
+    document.getElementById('su_username').value = '';
+    document.getElementById('su_password').value = '';
+  }
 
+  function login() {
+    clearMessages();
+    const username = document.getElementById('li_username').value.trim();
+    const password = document.getElementById('li_password').value.trim();
 
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) {
+      liMsg.innerText = 'Username वा Password गलत छ।';
+      return;
+    }
 
+    currentUser = user;
+    userDisplay.innerText = currentUser.username;
+    balanceDisplay.innerText = currentUser.balance.toFixed(2);
 
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('gameSection').style.display = 'block';
 
-Tools
+    startRound();
+  }
 
+  function logout() {
+    currentUser = null;
+    multiplier = 1;
+    clearInterval(intervalId);
+    document.getElementById('gameSection').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('login-form').style.display = 'none';
+    multiplierDiv.innerText = '1.00x';
+    cashoutBtn.disabled = true;
+    statusDiv.innerText = '';
+    betInput.value = 10;
+  }
 
+  function startRound() {
+    if (!currentUser) return;
 
-ChatGPT can make mistakes. Check important info.
-    
+    multiplier = 1;
+    hasCashedOut = false;
+    cashoutBtn.disabled = false;
+    statusDiv.innerText = 'Round सुरु भयो!';
+
+    let bet = parseFloat(betInput.value);
+    if (isNaN(bet) || bet < 10 || bet > 10000) {
+      statusDiv.innerText = 'कृपया Rs 10 देखि Rs 10000 सम्मको bet राख्नुहोस्।';
+      cashoutBtn.disabled = true;
+      return;
+    }
+    if (bet > currentUser.balance) {
+      statusDiv.innerText = 'तपाईंसँग पर्याप्त balance छैन।';
+      cashoutBtn.disabled = true;
+      return;
+    }
+
+    crashPoint = (Math.random() * 10 + 1).toFixed(2); // Crash 1.00x देखि 11.00x सम्म
+    multiplierDiv.innerText = multiplier.toFixed(2) + 'x';
+
+    intervalId = setInterval(() => {
+      multiplier += 0.01;
+      multiplierDiv.innerText = multiplier.toFixed(2) + 'x';
+
+      if (multiplier >= crashPoint) {
+        clearInterval(intervalId);
+        if (!hasCashedOut) {
+          // User ले हरायो
+          currentUser.balance -= bet;
+          balanceDisplay.innerText = currentUser.balance.toFixed(2);
+          statusDiv.innerText = `Crash भयो ${crashPoint}x मा। तपाईंले Rs ${bet.toFixed(2)} हराउनुभयो।`;
+          cashoutBtn.disabled = true;
+          setTimeout(startRound, 5000);
+        }
+      }
+    }, 50);
+  }
+
+  cashoutBtn.addEventListener('click', () => {
+    if (hasCashedOut) return;
+    hasCashedOut = true;
+    clearInterval(intervalId);
+
+    let bet = parseFloat(betInput.value);
+    let winAmount = bet * multiplier;
+
+    currentUser.balance += winAmount;
+    balanceDisplay.innerText = currentUser.balance.toFixed(2);
+
+    statusDiv.innerText = `तपाईंले Rs ${winAmount.toFixed(2)} जित्नुभयो! Cashout at ${multiplier.toFixed(2)}x`;
+    cashoutBtn.disabled = true;
+
+    setTimeout(startRound, 5000);
+  });
+</script>
+
+</body>
+</html>
