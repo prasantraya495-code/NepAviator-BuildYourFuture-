@@ -1,43 +1,25 @@
-<index.html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NepAviator - Build Your Future</title>
-  <link rel="stylesheet" href="./css/style.css" />
-</head>
-<body>
-  <!-- Login/Signup Section -->
-  <section id="auth-section">
-    <div class="auth-container">
-      <h2>Welcome to NepAviator</h2>
-      <form id="login-form">
-        <input type="text" placeholder="Username" required />
-        <input type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <a href="#">Sign up</a></p>
-    </div>
-  </section>  <!-- Wallet and Info Section -->  <section id="wallet-section" style="display: none">
-    <div class="wallet-container">
-      <h3>Wallet Balance: <span id="wallet-balance">Rs. 10000</span></h3>
-      <button id="add-money">Add Money</button>
-    </div>
-  </section>  <!-- Aviator Game Section -->  <section id="game-section" style="display: none">
-    <div class="aviator-game">
-      <div id="plane-animation">✈️</div>
-      <h2>Crash Multiplier: <span id="multiplier">1.00x</span></h2>
-      <div class="bet-controls">
-        <input type="number" id="bet-amount" placeholder="Enter bet (Rs)" />
-        <button id="place-bet">Place Bet</button>
-        <button id="cash-out">Cash Out</button>
-      </div>
-    </div>
-  </section>  <!-- Bonus & Refer Section -->  <section id="bonus-section" style="display: none">
-    <div class="bonus-container">
-      <p>Invite your friends & earn Rs. 20 each!</p>
-      <input type="text" value="https://nepaviator.app/ref/ABC123" readonly />
-      <button onclick="copyReferral()">Copy Referral Link</button>
-    </div>
-  </section>  <!-- Script -->  <script src="./js/index.js"></script></body>
-</html>
+NepAviator/
+│
+├── index.html          ← Login page
+├── signup.html         ← Signup page
+├── dashboard.html      ← Main dashboard
+├── aviator.html        ← Aviator game
+├── deposit.html        ← Deposit form
+├── withdraw.html       ← Withdraw form
+├── chat.html           ← Support chat page
+├── admin.html          ← Admin panel
+│
+├── css/
+│   └── styles.css      ← All CSS here
+│
+├── js/
+│   └── main.js         ← All JavaScript here
+│
+├── assets/
+│   ├── images/
+│   └── sounds/
+│
+└── vercel.json         ← (Optional) Vercel config file
+
+
+---
